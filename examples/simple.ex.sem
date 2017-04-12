@@ -1,0 +1,4 @@
+<global>
+  <additive: '+'>
+    <const: '3'>
+    <const: '2'>

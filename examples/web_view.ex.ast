@@ -1202,30 +1202,21 @@
                                    <factor>
                                      <atom>
                                        'print'
-                 <test_list>
-                   <test>
-                     <or_test>
-                       <and_test>
-                         <not_test>
-                           <comparison>
-                             <star_expr>
-                               <expr>
-                                 <term>
-                                   <factor>
-                                     <atom>
+                                     <trailer>
                                        '('
-                                       <list_compr>
-                                         <test>
-                                           <or_test>
-                                             <and_test>
-                                               <not_test>
-                                                 <comparison>
-                                                   <star_expr>
-                                                     <expr>
-                                                       <term>
-                                                         <factor>
-                                                           <atom>
-                                                             'response'
+                                       <arg_list>
+                                         <argument>
+                                           <test>
+                                             <or_test>
+                                               <and_test>
+                                                 <not_test>
+                                                   <comparison>
+                                                     <star_expr>
+                                                       <expr>
+                                                         <term>
+                                                           <factor>
+                                                             <atom>
+                                                               'response'
                                        ')'
                <newline>
            <dedent>

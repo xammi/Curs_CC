@@ -15,20 +15,11 @@
                              <atom>
                                <number>
                                  '3'
-         <test_list>
-           <test>
-             <or_test>
-               <and_test>
-                 <not_test>
-                   <comparison>
-                     <star_expr>
-                       <expr>
+                         '+'
                          <term>
                            <factor>
-                             '+'
-                             <factor>
-                               <atom>
-                                 <number>
-                                   '2'
+                             <atom>
+                               <number>
+                                 '2'
        <newline>
    '<EOF>'
