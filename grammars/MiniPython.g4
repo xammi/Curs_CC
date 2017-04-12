@@ -68,7 +68,7 @@ vfpdef : NAME ;
 stmt : simple_stmt | compound_stmt ;
 simple_stmt : ( expr_stmt | flow_stmt ) NEWLINE ;
 
-expr_stmt : testlist_star_expr ( '=' test | aug_assign | test_list ( '=' testlist_star_expr )* ) ;
+expr_stmt : testlist_star_expr ( '=' test | aug_assign  test_list | ( '=' testlist_star_expr )* ) ;
 testlist_star_expr : ( test | star_expr ) ( ',' ( test | star_expr ) )* ','? ;
 aug_assign : ADD_ASSIGN | SUB_ASSIGN | MULT_ASSIGN | DIV_ASSIGN | MOD_ASSIGN ;
 flow_stmt : PASS | BREAK | CONTINUE | RETURN test_list? ;

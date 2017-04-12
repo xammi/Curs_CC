@@ -4,7 +4,7 @@ from antlr4.tree.Trees import Trees
 
 from antlr_out.MiniPythonLexer import MiniPythonLexer
 from antlr_out.MiniPythonParser import MiniPythonParser
-from llvm import generate_llvm
+from semantic import get_semantic
 
 GRAMMAR = 'MiniPython'
 ANTLR_CALL = 'antlr4 -Dlanguage=Python3 {}.g4 -o ../antlr_out'.format(GRAMMAR)
@@ -76,7 +76,7 @@ def main():
         action = int(action)
         file_name = 'examples/' + examples[action - 1]
         tree = parse_file_input(file_name)
-        generate_llvm(tree, file_name)
+        get_semantic(tree, file_name)
         print('Success!')
     else:
         print('Goodbye!')

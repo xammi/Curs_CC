@@ -147,31 +147,22 @@
                                    <factor>
                                      <atom>
                                        'print'
-                 <test_list>
-                   <test>
-                     <or_test>
-                       <and_test>
-                         <not_test>
-                           <comparison>
-                             <star_expr>
-                               <expr>
-                                 <term>
-                                   <factor>
-                                     <atom>
+                                     <trailer>
                                        '('
-                                       <list_compr>
-                                         <test>
-                                           <or_test>
-                                             <and_test>
-                                               <not_test>
-                                                 <comparison>
-                                                   <star_expr>
-                                                     <expr>
-                                                       <term>
-                                                         <factor>
-                                                           <atom>
-                                                             <string>
-                                                               ''Вычисление факториалов''
+                                       <arg_list>
+                                         <argument>
+                                           <test>
+                                             <or_test>
+                                               <and_test>
+                                                 <not_test>
+                                                   <comparison>
+                                                     <star_expr>
+                                                       <expr>
+                                                         <term>
+                                                           <factor>
+                                                             <atom>
+                                                               <string>
+                                                                 ''Вычисление факториалов''
                                        ')'
                <newline>
            <stmt>
@@ -234,84 +225,78 @@
                                            <factor>
                                              <atom>
                                                'print'
-                         <test_list>
-                           <test>
-                             <or_test>
-                               <and_test>
-                                 <not_test>
-                                   <comparison>
-                                     <star_expr>
-                                       <expr>
-                                         <term>
-                                           <factor>
-                                             <atom>
+                                             <trailer>
                                                '('
-                                               <list_compr>
-                                                 <test>
-                                                   <or_test>
-                                                     <and_test>
-                                                       <not_test>
-                                                         <comparison>
-                                                           <star_expr>
-                                                             <expr>
-                                                               <term>
-                                                                 <factor>
-                                                                   <atom>
-                                                                     <string>
-                                                                       ''Факториал ''
+                                               <arg_list>
+                                                 <argument>
+                                                   <test>
+                                                     <or_test>
+                                                       <and_test>
+                                                         <not_test>
+                                                           <comparison>
+                                                             <star_expr>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       <string>
+                                                                         ''Факториал ''
                                                  ','
-                                                 <test>
-                                                   <or_test>
-                                                     <and_test>
-                                                       <not_test>
-                                                         <comparison>
-                                                           <star_expr>
-                                                             <expr>
-                                                               <term>
-                                                                 <factor>
-                                                                   <atom>
-                                                                     'i'
+                                                 <argument>
+                                                   <test>
+                                                     <or_test>
+                                                       <and_test>
+                                                         <not_test>
+                                                           <comparison>
+                                                             <star_expr>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       'i'
                                                  ','
-                                                 <test>
-                                                   <or_test>
-                                                     <and_test>
-                                                       <not_test>
-                                                         <comparison>
-                                                           <star_expr>
-                                                             <expr>
-                                                               <term>
-                                                                 <factor>
-                                                                   <atom>
-                                                                     <string>
-                                                                       '' = ''
+                                                 <argument>
+                                                   <test>
+                                                     <or_test>
+                                                       <and_test>
+                                                         <not_test>
+                                                           <comparison>
+                                                             <star_expr>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       <string>
+                                                                         '' = ''
                                                  ','
-                                                 <test>
-                                                   <or_test>
-                                                     <and_test>
-                                                       <not_test>
-                                                         <comparison>
-                                                           <star_expr>
-                                                             <expr>
-                                                               <term>
-                                                                 <factor>
-                                                                   <atom>
-                                                                     'factorial'
-                                                                   <trailer>
-                                                                     '('
-                                                                     <arg_list>
-                                                                       <argument>
-                                                                         <test>
-                                                                           <or_test>
-                                                                             <and_test>
-                                                                               <not_test>
-                                                                                 <comparison>
-                                                                                   <star_expr>
-                                                                                     <expr>
-                                                                                       <term>
-                                                                                         <factor>
-                                                                                           <atom>
-                                                                                             'i'
-                                                                     ')'
+                                                 <argument>
+                                                   <test>
+                                                     <or_test>
+                                                       <and_test>
+                                                         <not_test>
+                                                           <comparison>
+                                                             <star_expr>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       'factorial'
+                                                                     <trailer>
+                                                                       '('
+                                                                       <arg_list>
+                                                                         <argument>
+                                                                           <test>
+                                                                             <or_test>
+                                                                               <and_test>
+                                                                                 <not_test>
+                                                                                   <comparison>
+                                                                                     <star_expr>
+                                                                                       <expr>
+                                                                                         <term>
+                                                                                           <factor>
+                                                                                             <atom>
+                                                                                               'i'
+                                                                       ')'
                                                ')'
                        <newline>
                    <dedent>

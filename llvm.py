@@ -1,6 +1,3 @@
-from antlr4 import *
-from antlr_out.MiniPythonListener import MiniPythonListener
-
 
 llvm_header = '''
 ; ModuleID = '{}'
@@ -34,17 +31,8 @@ llvm_footer = '''
 '''
 
 
-class Runtime(MiniPythonListener):
-    def visitTerminal(self, node):
-        print('Visit terminal %s' % node.getText())
-
-
 def generate_llvm(tree, file_name):
     result = ''
-
-    walker = ParseTreeWalker()
-    runtime = Runtime()
-    walker.walk(runtime, tree)
 
     llvm_code = llvm_header.format(file_name) + result + llvm_attributes + llvm_footer
     with open(file_name + '.ll', 'w') as dest_file:
