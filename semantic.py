@@ -19,6 +19,9 @@ class SemanticParser(MiniPythonListener):
         def get_children(self):
             return self.body
 
+        def add(self, node):
+            self.body.append(node)
+
     def __init__(self):
         self.root = SemanticParser.Global(None)
         self.current_node = self.root
@@ -32,7 +35,7 @@ class SemanticParser(MiniPythonListener):
 
     def enterSuite(self, ctx):
         node = SemanticParser.Block(self.current_node)
-        self.current_node.body.append(node)
+        self.current_node.add(node)
         self.current_node = node
 
     def exitSuite(self, ctx):
@@ -53,7 +56,7 @@ class SemanticParser(MiniPythonListener):
     def enterFunc_def(self, ctx):
         func_name = ctx.children[1].symbol.text
         node = SemanticParser.Function(func_name, self.current_node)
-        self.current_node.body.append(node)
+        self.current_node.add(node)
         self.current_node = node
 
     class FunctionInput(Global):
@@ -87,7 +90,7 @@ class SemanticParser(MiniPythonListener):
 
     def enterIf_stmt(self, ctx):
         node = SemanticParser.Condition(self.current_node)
-        self.current_node.body.append(node)
+        self.current_node.add(node)
         self.current_node = node
 
     def exitIf_stmt(self, ctx):
@@ -106,7 +109,7 @@ class SemanticParser(MiniPythonListener):
 
     def enterWhile_stmt(self, ctx):
         node = SemanticParser.CycleByCond(self.current_node)
-        self.current_node.body.append(node)
+        self.current_node.add(node)
         self.current_node = node
 
     def exitWhile_stmt(self, ctx):
@@ -126,7 +129,7 @@ class SemanticParser(MiniPythonListener):
 
     def enterFor_stmt(self, ctx):
         node = SemanticParser.CycleByCollection(self.current_node)
-        self.current_node.body.append(node)
+        self.current_node.add(node)
         self.current_node = node
 
     def exitFor_stmt(self, ctx):
@@ -143,7 +146,7 @@ class SemanticParser(MiniPythonListener):
     def enterFlow_stmt(self, ctx):
         action = ctx.children[0].symbol.text
         node = SemanticParser.ControlFlow(action, self.current_node)
-        self.current_node.body.append(node)
+        self.current_node.add(node)
         self.current_node = node
 
     def exitFlow_stmt(self, ctx):
@@ -160,10 +163,28 @@ class SemanticParser(MiniPythonListener):
     def enterClass_def(self, ctx):
         name = ctx.children[1].symbol.text
         node = SemanticParser.Abstraction(name, self.current_node)
-        self.current_node.body.append(node)
+        self.current_node.add(node)
         self.current_node = node
 
     def exitClass_def(self, ctx):
+        self.current_node = self.current_node.scope
+
+    class Decorative(Global):
+        def __init__(self, parts, scope):
+            super().__init__(scope)
+            self.parts = parts
+
+        def __str__(self):
+            return "<decorator: '{}'>".format('.'.join(self.parts))
+
+    def enterDecorator(self, ctx):
+        dotted_name = ctx.children[1]
+        joined_name = ''.join(map(lambda x: x.symbol.text, dotted_name.children))
+        node = SemanticParser.Decorative(joined_name.split('.'), self.current_node)
+        self.current_node.add(node)
+        self.current_node = node
+
+    def exitDecorator(self, ctx):
         self.current_node = self.current_node.scope
 
     def enterTest(self, ctx):
@@ -174,9 +195,22 @@ class SemanticParser(MiniPythonListener):
         if len(ctx.children) == 1:
             pass
 
+    class Conjunction(Global):
+        def __init__(self, scope):
+            super().__init__(scope)
+
+        def __str__(self):
+            return "<and>"
+
     def enterAnd_test(self, ctx):
-        if len(ctx.children) == 1:
-            pass
+        if len(ctx.children) > 1:
+            node = SemanticParser.Conjunction(self.current_node)
+            self.current_node.add(node)
+            self.current_node = node
+
+    def exitAnd_test(self, ctx):
+        if isinstance(self.current_node, SemanticParser.Conjunction):
+            self.current_node = self.current_node.scope
 
     def enterNot_test(self, ctx):
         if len(ctx.children) == 1:
@@ -234,7 +268,7 @@ class SemanticParser(MiniPythonListener):
                 node = SemanticParser.AugAssign(operator, self.current_node)
 
             if node:
-                self.current_node.body.append(node)
+                self.current_node.add(node)
                 self.current_node = node
 
     def exitExpr_stmt(self, ctx):
@@ -258,7 +292,7 @@ class SemanticParser(MiniPythonListener):
             if isinstance(ctx.children[1], TerminalNode):
                 operator = ctx.children[1].symbol.text
                 node = SemanticParser.Addity(operator, self.current_node)
-                self.current_node.body.append(node)
+                self.current_node.add(node)
                 self.current_node = node
 
     def exitExpr(self, ctx):
@@ -278,7 +312,7 @@ class SemanticParser(MiniPythonListener):
             if isinstance(ctx.children[1], TerminalNode):
                 operator = ctx.children[1].symbol.text
                 node = SemanticParser.Multiply(operator, self.current_node)
-                self.current_node.body.append(node)
+                self.current_node.add(node)
                 self.current_node = node
         if len(ctx.children) == 1:
             pass
@@ -321,19 +355,23 @@ class SemanticParser(MiniPythonListener):
 
             if isinstance(child, TerminalNode):
                 name = child.symbol.text
-                if len(ctx.parentCtx.children) == 1:
+                if name in ['True', 'False', 'None']:
+                    node = SemanticParser.Constant(name, self.current_node)
+                    self.current_node.add(node)
+
+                elif len(ctx.parentCtx.children) == 1:
                     node = SemanticParser.Variable(name, self.current_node)
-                    self.current_node.body.append(node)
+                    self.current_node.add(node)
 
                 elif ctx.parentCtx.children[1].children[0].symbol.text == '(':
                     node = SemanticParser.Call(name, self.current_node)
-                    self.current_node.body.append(node)
+                    self.current_node.add(node)
                     self.current_node = node
 
             elif isinstance(child, (MiniPythonParser.NumberContext, MiniPythonParser.StringContext)):
                 value = child.children[0].symbol.text
                 node = SemanticParser.Constant(value, self.current_node)
-                self.current_node.body.append(node)
+                self.current_node.add(node)
 
     def exitTrailer(self, ctx):
         if isinstance(self.current_node, SemanticParser.Call):

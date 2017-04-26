@@ -1,6 +1,8 @@
 <global>
-  <var: 'attr'>
-  <const: '1'>
-  <function: 'decorated'>
+  <if>
+    <and>
+      <const: 'True'>
+      <const: 'False'>
     <block>
-      <flow: 'pass'>
+      <call: 'print'>
+        <const: '1'>

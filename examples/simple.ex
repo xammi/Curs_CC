@@ -1,3 +1,2 @@
-@decorator(attr=1)
-def decorated():
-    pass
+if True and False:
+    print(1)
