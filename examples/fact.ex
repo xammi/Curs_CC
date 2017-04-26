@@ -10,3 +10,5 @@ def main():
     print('Вычисление факториалов')
     for i in range(10):
         print('Факториал ', i, ' = ', factorial(i))
+
+main()

@@ -23,6 +23,21 @@ class SemanticParser(MiniPythonListener):
         self.root = SemanticParser.Global(None)
         self.current_node = self.root
 
+    class Block(Global):
+        def __init__(self, scope):
+            super().__init__(scope)
+
+        def __str__(self):
+            return '<block>'
+
+    def enterSuite(self, ctx):
+        node = SemanticParser.Block(self.current_node)
+        self.current_node.body.append(node)
+        self.current_node = node
+
+    def exitSuite(self, ctx):
+        self.current_node = self.current_node.scope
+
     class Function(Global):
         def __init__(self, name, scope):
             super().__init__(scope)
@@ -117,6 +132,40 @@ class SemanticParser(MiniPythonListener):
     def exitFor_stmt(self, ctx):
         self.current_node = self.current_node.scope
 
+    class ControlFlow(Global):
+        def __init__(self, action, scope):
+            super().__init__(scope)
+            self.action = action
+
+        def __str__(self):
+            return "<flow: '{}'>".format(self.action)
+
+    def enterFlow_stmt(self, ctx):
+        action = ctx.children[0].symbol.text
+        node = SemanticParser.ControlFlow(action, self.current_node)
+        self.current_node.body.append(node)
+        self.current_node = node
+
+    def exitFlow_stmt(self, ctx):
+        self.current_node = self.current_node.scope
+
+    class Abstraction(Global):
+        def __init__(self, name, scope):
+            super().__init__(scope)
+            self.name = name
+
+        def __str__(self):
+            return "<class: '{}'>".format(self.name)
+
+    def enterClass_def(self, ctx):
+        name = ctx.children[1].symbol.text
+        node = SemanticParser.Abstraction(name, self.current_node)
+        self.current_node.body.append(node)
+        self.current_node = node
+
+    def exitClass_def(self, ctx):
+        self.current_node = self.current_node.scope
+
     def enterTest(self, ctx):
         if len(ctx.children) == 1:
             pass
@@ -155,6 +204,41 @@ class SemanticParser(MiniPythonListener):
 
     def exitComparison(self, ctx):
         if isinstance(self.current_node, SemanticParser.Comparison):
+            self.current_node = self.current_node.scope
+
+    class Assign(Global):
+        def __init__(self, operator, scope):
+            super().__init__(scope)
+            self.operator = operator
+
+        def __str__(self):
+            return "<assign: '{}'>".format(self.operator)
+
+    class AugAssign(Global):
+        def __init__(self, operator, scope):
+            super().__init__(scope)
+            self.operator = operator
+
+        def __str__(self):
+            return "<aug assign: '{}'>".format(self.operator)
+
+    def enterExpr_stmt(self, ctx):
+        if len(ctx.children) > 1:
+            node = None
+            if isinstance(ctx.children[1], TerminalNode):
+                operator = ctx.children[1].symbol.text
+                node = SemanticParser.Assign(operator, self.current_node)
+
+            elif isinstance(ctx.children[1], MiniPythonParser.Aug_assignContext):
+                operator = ctx.children[1].children[0].symbol.text
+                node = SemanticParser.AugAssign(operator, self.current_node)
+
+            if node:
+                self.current_node.body.append(node)
+                self.current_node = node
+
+    def exitExpr_stmt(self, ctx):
+        if isinstance(self.current_node, (SemanticParser.Assign, SemanticParser.AugAssign)):
             self.current_node = self.current_node.scope
 
     def enterStar_expr(self, ctx):

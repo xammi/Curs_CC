@@ -1,28 +1,34 @@
 <global>
   <function: 'max'>
+    <block>
   <function: 'factorial'>
     <input: 'n'>
-    <if>
-      <comp: '=='>
-        <var: 'n'>
-        <const: '0'>
-      <const: '1'>
-    <multiply: '*'>
-      <var: 'n'>
-      <call: 'factorial'>
-        <additive: '-'>
+    <block>
+      <if>
+        <comp: '=='>
           <var: 'n'>
+          <const: '0'>
+        <block>
           <const: '1'>
-  <function: 'main'>
-    <call: 'print'>
-      <const: ''Вычисление факториалов''>
-    <for>
-      <var: 'i'>
-      <call: 'range'>
-        <const: '10'>
-      <call: 'print'>
-        <const: ''Факториал ''>
-        <var: 'i'>
-        <const: '' = ''>
+      <multiply: '*'>
+        <var: 'n'>
         <call: 'factorial'>
-          <var: 'i'>
+          <additive: '-'>
+            <var: 'n'>
+            <const: '1'>
+  <function: 'main'>
+    <block>
+      <call: 'print'>
+        <const: ''Вычисление факториалов''>
+      <for>
+        <var: 'i'>
+        <call: 'range'>
+          <const: '10'>
+        <block>
+          <call: 'print'>
+            <const: ''Факториал ''>
+            <var: 'i'>
+            <const: '' = ''>
+            <call: 'factorial'>
+              <var: 'i'>
+  <call: 'main'>

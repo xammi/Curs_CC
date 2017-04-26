@@ -301,4 +301,23 @@
                        <newline>
                    <dedent>
            <dedent>
+   <stmt>
+     <simple_stmt>
+       <expr_stmt>
+         <testlist_star_expr>
+           <test>
+             <or_test>
+               <and_test>
+                 <not_test>
+                   <comparison>
+                     <star_expr>
+                       <expr>
+                         <term>
+                           <factor>
+                             <atom>
+                               'main'
+                             <trailer>
+                               '('
+                               ')'
+       <newline>
    '<EOF>'

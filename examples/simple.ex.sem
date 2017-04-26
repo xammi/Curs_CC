@@ -1,4 +1,6 @@
 <global>
-  <additive: '+'>
-    <const: '3'>
-    <const: '2'>
+  <var: 'attr'>
+  <const: '1'>
+  <function: 'decorated'>
+    <block>
+      <flow: 'pass'>
