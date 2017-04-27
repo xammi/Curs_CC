@@ -450,9 +450,21 @@ class SemanticParser(MiniPythonListener):
     class Index(Global):
         def __init__(self, scope):
             super().__init__(scope)
+            self.is_slice = False
+            self.full_left = False
+            self.full_right = False
 
         def __str__(self):
-            return "<index>".format()
+            if self.is_slice:
+                add_info = 'slice'
+                if self.full_left and self.full_right:
+                    add_info = 'full'
+                elif self.full_left:
+                    add_info = 'to right'
+                elif self.full_right:
+                    add_info = 'from left'
+                return "<index: '{}'>".format(add_info)
+            return "<index>"
 
     class Resolve(Global):
         def __init__(self, name, scope):
@@ -505,8 +517,21 @@ class SemanticParser(MiniPythonListener):
         pass
 
     def enterSubscript_list(self, ctx):
-        # TODO: parse subscripts
-        pass
+        child = ctx.children[0]
+        if isinstance(child, TerminalNode) and child.getText() == ':':
+            self.current_node.is_slice = True
+            self.current_node.full_left = True
+
+            if len(ctx.children) == 1:
+                self.current_node.full_right = True
+
+        elif len(ctx.children) > 1:
+            child = ctx.children[1]
+            if isinstance(child, TerminalNode) and child.getText() == ':':
+                self.current_node.is_slice = True
+
+                if len(ctx.children) == 2:
+                    self.current_node.full_right = True
 
     def to_file(self, dest_file):
         def write_rec(node, depth):
