@@ -1,2 +1,1 @@
-if True and False:
-    print(1)
+print(x=2)

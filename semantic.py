@@ -45,16 +45,12 @@ class SemanticParser(MiniPythonListener):
         def __init__(self, name, scope):
             super().__init__(scope)
             self.name = name
-            self.input = []
 
         def __str__(self):
             return "<function: '{}'>".format(self.name)
 
-        def get_children(self):
-            return self.input + super().get_children()
-
     def enterFunc_def(self, ctx):
-        func_name = ctx.children[1].symbol.text
+        func_name = ctx.children[1].getText()
         node = SemanticParser.Function(func_name, self.current_node)
         self.current_node.add(node)
         self.current_node = node
@@ -63,16 +59,53 @@ class SemanticParser(MiniPythonListener):
         def __init__(self, name, scope):
             super().__init__(scope)
             self.name = name
+            self.has_default = False
+            self.all_positional = False
+            self.all_keywords = False
 
         def __str__(self):
-            return "<input: '{}'>".format(self.name)
+            tag_name = 'input'
+            if self.has_default:
+                tag_name = 'default'
+            elif self.all_positional:
+                tag_name = 'array'
+            elif self.all_keywords:
+                tag_name = 'dict'
+            return "<{}: '{}'>".format(tag_name, self.name)
 
     def enterVfpdef(self, ctx):
-        param_name = ctx.children[0].symbol.text
-        func = self.current_node
-        if isinstance(func, SemanticParser.Function):
-            node = SemanticParser.FunctionInput(param_name, self.current_node)
-            func.input.append(node)
+        if isinstance(self.current_node, SemanticParser.FunctionInput):
+            self.current_node = self.current_node.scope
+
+        param_name = ctx.children[0].getText()
+        node = SemanticParser.FunctionInput(param_name, self.current_node)
+        self.current_node.add(node)
+        self.current_node = node
+
+    def exitVfpdef(self, ctx):
+        my_index = 0
+        for index, child in enumerate(ctx.parentCtx.children):
+            if isinstance(child, MiniPythonParser.VfpdefContext):
+                if ctx.invokingState == child.invokingState:
+                    my_index = index
+                    break
+
+        if my_index > 0:
+            before = ctx.parentCtx.children[my_index - 1]
+            if isinstance(before, TerminalNode):
+                if before.getText() == '*':
+                    self.current_node.all_positional = True
+                elif before.getText() == '**':
+                    self.current_node.all_keywords = True
+
+        if my_index < len(ctx.parentCtx.children) - 1:
+            after = ctx.parentCtx.children[my_index + 1]
+            if isinstance(after, TerminalNode) and after.getText() == '=':
+                self.current_node.has_default = True
+
+    def exitVar_arg_list(self, ctx):
+        if isinstance(self.current_node, SemanticParser.FunctionInput):
+            self.current_node = self.current_node.scope
 
     def exitFunc_def(self, ctx):
         self.current_node = self.current_node.scope
@@ -80,10 +113,6 @@ class SemanticParser(MiniPythonListener):
     class Condition(Global):
         def __init__(self, scope):
             super().__init__(scope)
-            self.predicate = []
-
-        def get_children(self):
-            return self.predicate + super().get_children()
 
         def __str__(self):
             return '<if>'
@@ -99,10 +128,6 @@ class SemanticParser(MiniPythonListener):
     class CycleByCond(Global):
         def __init__(self, scope):
             super().__init__(scope)
-            self.predicate = []
-
-        def get_children(self):
-            return self.predicate + super().get_children()
 
         def __str__(self):
             return '<while>'
@@ -118,11 +143,6 @@ class SemanticParser(MiniPythonListener):
     class CycleByCollection(Global):
         def __init__(self, scope):
             super().__init__(scope)
-            self.cursor = []
-            self.collection = []
-
-        def get_children(self):
-            return self.cursor + self.collection + super().get_children()
 
         def __str__(self):
             return '<for>'
@@ -144,7 +164,7 @@ class SemanticParser(MiniPythonListener):
             return "<flow: '{}'>".format(self.action)
 
     def enterFlow_stmt(self, ctx):
-        action = ctx.children[0].symbol.text
+        action = ctx.children[0].getText()
         node = SemanticParser.ControlFlow(action, self.current_node)
         self.current_node.add(node)
         self.current_node = node
@@ -161,7 +181,7 @@ class SemanticParser(MiniPythonListener):
             return "<class: '{}'>".format(self.name)
 
     def enterClass_def(self, ctx):
-        name = ctx.children[1].symbol.text
+        name = ctx.children[1].getText()
         node = SemanticParser.Abstraction(name, self.current_node)
         self.current_node.add(node)
         self.current_node = node
@@ -179,7 +199,7 @@ class SemanticParser(MiniPythonListener):
 
     def enterDecorator(self, ctx):
         dotted_name = ctx.children[1]
-        joined_name = ''.join(map(lambda x: x.symbol.text, dotted_name.children))
+        joined_name = ''.join(map(lambda x: x.getText(), dotted_name.children))
         node = SemanticParser.Decorative(joined_name.split('.'), self.current_node)
         self.current_node.add(node)
         self.current_node = node
@@ -191,9 +211,23 @@ class SemanticParser(MiniPythonListener):
         if len(ctx.children) == 1:
             pass
 
+    class Disjunction(Global):
+        def __init__(self, scope):
+            super().__init__(scope)
+
+        def __str__(self):
+            return "<or>"
+
     def enterOr_test(self, ctx):
-        if len(ctx.children) == 1:
-            pass
+        if len(ctx.children) > 1:
+            node = SemanticParser.Disjunction(self.current_node)
+            self.current_node.add(node)
+            self.current_node = node
+
+    def exitOr_test(self, ctx):
+        if isinstance(self.current_node, SemanticParser.Disjunction):
+            if len(ctx.children) > 1:
+                self.current_node = self.current_node.scope
 
     class Conjunction(Global):
         def __init__(self, scope):
@@ -210,11 +244,26 @@ class SemanticParser(MiniPythonListener):
 
     def exitAnd_test(self, ctx):
         if isinstance(self.current_node, SemanticParser.Conjunction):
-            self.current_node = self.current_node.scope
+            if len(ctx.children) > 1:
+                self.current_node = self.current_node.scope
+
+    class Negative(Global):
+        def __init__(self, scope):
+            super().__init__(scope)
+
+        def __str__(self):
+            return "<not>"
 
     def enterNot_test(self, ctx):
-        if len(ctx.children) == 1:
-            pass
+        if len(ctx.children) > 1:
+            node = SemanticParser.Negative(self.current_node)
+            self.current_node.add(node)
+            self.current_node = node
+
+    def exitNot_test(self, ctx):
+        if isinstance(self.current_node, SemanticParser.Negative):
+            if len(ctx.children) > 1:
+                self.current_node = self.current_node.scope
 
     class Comparison(Global):
         def __init__(self, operator, scope):
@@ -224,20 +273,19 @@ class SemanticParser(MiniPythonListener):
         def __str__(self):
             return "<comp: '{}'>".format(self.operator)
 
-    def enterComparison(self, ctx):
-        if len(ctx.children) > 1:
-            #TODO: make loop for many comp_ops
-            child = ctx.children[1]
-            if isinstance(child, MiniPythonParser.Comp_opContext):
-                operator = child.children[0].symbol.text
+    def enterComp_op(self, ctx):
+        operator = ctx.children[0].getText()
+        node = SemanticParser.Comparison(operator, self.current_node)
 
-                if isinstance(self.current_node, (SemanticParser.Condition, SemanticParser.CycleByCond)):
-                    node = SemanticParser.Comparison(operator, self.current_node)
-                    self.current_node.predicate.append(node)
-                    self.current_node = node
+        left = self.current_node.body[-1]
+        self.current_node.body.remove(left)
+        node.add(left)
+
+        self.current_node.add(node)
+        self.current_node = node
 
     def exitComparison(self, ctx):
-        if isinstance(self.current_node, SemanticParser.Comparison):
+        while isinstance(self.current_node, SemanticParser.Comparison):
             self.current_node = self.current_node.scope
 
     class Assign(Global):
@@ -260,11 +308,11 @@ class SemanticParser(MiniPythonListener):
         if len(ctx.children) > 1:
             node = None
             if isinstance(ctx.children[1], TerminalNode):
-                operator = ctx.children[1].symbol.text
+                operator = ctx.children[1].getText()
                 node = SemanticParser.Assign(operator, self.current_node)
 
             elif isinstance(ctx.children[1], MiniPythonParser.Aug_assignContext):
-                operator = ctx.children[1].children[0].symbol.text
+                operator = ctx.children[1].children[0].getText()
                 node = SemanticParser.AugAssign(operator, self.current_node)
 
             if node:
@@ -290,7 +338,7 @@ class SemanticParser(MiniPythonListener):
     def enterExpr(self, ctx):
         if len(ctx.children) > 1:
             if isinstance(ctx.children[1], TerminalNode):
-                operator = ctx.children[1].symbol.text
+                operator = ctx.children[1].getText()
                 node = SemanticParser.Addity(operator, self.current_node)
                 self.current_node.add(node)
                 self.current_node = node
@@ -310,16 +358,18 @@ class SemanticParser(MiniPythonListener):
     def enterTerm(self, ctx):
         if len(ctx.children) > 1:
             if isinstance(ctx.children[1], TerminalNode):
-                operator = ctx.children[1].symbol.text
+                operator = ctx.children[1].getText()
                 node = SemanticParser.Multiply(operator, self.current_node)
                 self.current_node.add(node)
                 self.current_node = node
+
         if len(ctx.children) == 1:
             pass
 
     def exitTerm(self, ctx):
         if isinstance(self.current_node, SemanticParser.Multiply):
-            self.current_node = self.current_node.scope
+            if len(ctx.children) > 1:
+                self.current_node = self.current_node.scope
 
     def enterFactor(self, ctx):
         if len(ctx.children) == 1:
@@ -349,12 +399,26 @@ class SemanticParser(MiniPythonListener):
         def __str__(self):
             return "<call: '{}'>".format(self.callable)
 
-    def enterAtom(self, ctx):
-        if len(ctx.children) == 1:
-            child = ctx.children[0]
+    class GenList(Global):
+        def __init__(self, scope):
+            super().__init__(scope)
 
+        def __str__(self):
+            return "<list>"
+
+    class GenDict(Global):
+        def __init__(self, scope):
+            super().__init__(scope)
+
+        def __str__(self):
+            return "<dict>"
+
+    def enterAtom(self, ctx):
+        child = ctx.children[0]
+
+        if len(ctx.children) == 1:
             if isinstance(child, TerminalNode):
-                name = child.symbol.text
+                name = child.getText()
                 if name in ['True', 'False', 'None']:
                     node = SemanticParser.Constant(name, self.current_node)
                     self.current_node.add(node)
@@ -363,19 +427,58 @@ class SemanticParser(MiniPythonListener):
                     node = SemanticParser.Variable(name, self.current_node)
                     self.current_node.add(node)
 
-                elif ctx.parentCtx.children[1].children[0].symbol.text == '(':
+                elif ctx.parentCtx.children[1].children[0].getText() == '(':
                     node = SemanticParser.Call(name, self.current_node)
                     self.current_node.add(node)
                     self.current_node = node
 
             elif isinstance(child, (MiniPythonParser.NumberContext, MiniPythonParser.StringContext)):
-                value = child.children[0].symbol.text
+                value = child.children[0].getText()
                 node = SemanticParser.Constant(value, self.current_node)
                 self.current_node.add(node)
+
+        elif child.getText() == '[':
+            node = SemanticParser.GenList(self.current_node)
+            self.current_node.add(node)
+            self.current_node = node
+
+        elif child.getText() == '{':
+            node = SemanticParser.GenDict(self.current_node)
+            self.current_node.add(node)
+            self.current_node = node
+
+    def exitAtom(self, ctx):
+        if isinstance(self.current_node, (SemanticParser.GenList, SemanticParser.GenDict)):
+            if len(ctx.children) > 1:
+                self.current_node = self.current_node.scope
 
     def exitTrailer(self, ctx):
         if isinstance(self.current_node, SemanticParser.Call):
             self.current_node = self.current_node.scope
+
+    def enterComp_for(self, ctx):
+        node = SemanticParser.CycleByCollection(self.current_node)
+        self.current_node.add(node)
+        self.current_node = node
+
+    def exitComp_for(self, ctx):
+        self.current_node = self.current_node.scope
+
+    def enterComp_if(self, ctx):
+        node = SemanticParser.Condition(self.current_node)
+        self.current_node.add(node)
+        self.current_node = node
+
+    def exitComp_if(self, ctx):
+        self.current_node = self.current_node.scope
+
+    def enterArgument(self, ctx):
+        #TODO: parse different arguments
+        pass
+
+    def enterSubscript_list(self, ctx):
+        # TODO: parse subscripts
+        pass
 
     def to_file(self, dest_file):
         def write_rec(node, depth):

@@ -1,8 +1,4 @@
 <global>
-  <if>
-    <and>
-      <const: 'True'>
-      <const: 'False'>
-    <block>
-      <call: 'print'>
-        <const: '1'>
+  <call: 'print'>
+    <var: 'x'>
+    <const: '2'>

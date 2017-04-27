@@ -106,7 +106,7 @@ arg_list : argument ( ',' argument )* ','? ;
 argument : test comp_for? | test '=' test | '*' test | '**' test ;
 
 comp_iter : comp_for | comp_if ;
-comp_for : FOR expr_list IN or_test comp_iter ;
+comp_for : FOR expr_list IN or_test comp_iter? ;
 comp_if : IF or_test comp_iter? ;
 
 dotted_name : NAME ( '.' NAME )* ;

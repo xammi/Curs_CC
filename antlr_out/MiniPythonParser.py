@@ -8,7 +8,7 @@ import sys
 def serializedATN():
     with StringIO() as buf:
         buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3>")
-        buf.write("\u022d\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\u022e\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
         buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
         buf.write("\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22\4\23\t\23")
         buf.write("\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31")
@@ -58,11 +58,11 @@ def serializedATN():
         buf.write("\13%\3%\5%\u01ec\n%\3&\3&\3&\3&\3&\3&\5&\u01f4\n&\3&\3")
         buf.write("&\3&\3\'\3\'\3\'\7\'\u01fc\n\'\f\'\16\'\u01ff\13\'\3\'")
         buf.write("\5\'\u0202\n\'\3(\3(\5(\u0206\n(\3(\3(\3(\3(\3(\3(\3(")
-        buf.write("\3(\5(\u0210\n(\3)\3)\5)\u0214\n)\3*\3*\3*\3*\3*\3*\3")
-        buf.write("+\3+\3+\5+\u021f\n+\3,\3,\3,\7,\u0224\n,\f,\16,\u0227")
+        buf.write("\3(\5(\u0210\n(\3)\3)\5)\u0214\n)\3*\3*\3*\3*\3*\5*\u021b")
+        buf.write("\n*\3+\3+\3+\5+\u0220\n+\3,\3,\3,\7,\u0225\n,\f,\16,\u0228")
         buf.write("\13,\3-\3-\3.\3.\3.\2\2/\2\4\6\b\n\f\16\20\22\24\26\30")
         buf.write("\32\34\36 \"$&(*,.\60\62\64\668:<>@BDFHJLNPRTVXZ\2\6\3")
-        buf.write("\2\62\66\3\2./\4\2##\60\61\3\29:\2\u0261\2a\3\2\2\2\4")
+        buf.write("\2\62\66\3\2./\4\2##\60\61\3\29:\2\u0263\2a\3\2\2\2\4")
         buf.write("g\3\2\2\2\6l\3\2\2\2\bw\3\2\2\2\n{\3\2\2\2\f\u0080\3\2")
         buf.write("\2\2\16\u00c6\3\2\2\2\20\u00c8\3\2\2\2\22\u00cc\3\2\2")
         buf.write("\2\24\u00d0\3\2\2\2\26\u00d4\3\2\2\2\30\u00e5\3\2\2\2")
@@ -74,8 +74,8 @@ def serializedATN():
         buf.write("\3\2\2\2>\u019b\3\2\2\2@\u01b6\3\2\2\2B\u01b8\3\2\2\2")
         buf.write("D\u01c6\3\2\2\2F\u01d7\3\2\2\2H\u01e2\3\2\2\2J\u01ed\3")
         buf.write("\2\2\2L\u01f8\3\2\2\2N\u020f\3\2\2\2P\u0213\3\2\2\2R\u0215")
-        buf.write("\3\2\2\2T\u021b\3\2\2\2V\u0220\3\2\2\2X\u0228\3\2\2\2")
-        buf.write("Z\u022a\3\2\2\2\\b\7\4\2\2]b\5\24\13\2^_\5\36\20\2_`\7")
+        buf.write("\3\2\2\2T\u021c\3\2\2\2V\u0221\3\2\2\2X\u0229\3\2\2\2")
+        buf.write("Z\u022b\3\2\2\2\\b\7\4\2\2]b\5\24\13\2^_\5\36\20\2_`\7")
         buf.write("\4\2\2`b\3\2\2\2a\\\3\2\2\2a]\3\2\2\2a^\3\2\2\2b\3\3\2")
         buf.write("\2\2cf\7\4\2\2df\5\22\n\2ec\3\2\2\2ed\3\2\2\2fi\3\2\2")
         buf.write("\2ge\3\2\2\2gh\3\2\2\2hj\3\2\2\2ig\3\2\2\2jk\7\2\2\3k")
@@ -263,21 +263,22 @@ def serializedATN():
         buf.write("\3\2\2\2\u0211\u0214\5R*\2\u0212\u0214\5T+\2\u0213\u0211")
         buf.write("\3\2\2\2\u0213\u0212\3\2\2\2\u0214Q\3\2\2\2\u0215\u0216")
         buf.write("\7\16\2\2\u0216\u0217\5F$\2\u0217\u0218\7\17\2\2\u0218")
-        buf.write("\u0219\5*\26\2\u0219\u021a\5P)\2\u021aS\3\2\2\2\u021b")
-        buf.write("\u021c\7\n\2\2\u021c\u021e\5*\26\2\u021d\u021f\5P)\2\u021e")
-        buf.write("\u021d\3\2\2\2\u021e\u021f\3\2\2\2\u021fU\3\2\2\2\u0220")
-        buf.write("\u0225\7\67\2\2\u0221\u0222\7\"\2\2\u0222\u0224\7\67\2")
-        buf.write("\2\u0223\u0221\3\2\2\2\u0224\u0227\3\2\2\2\u0225\u0223")
-        buf.write("\3\2\2\2\u0225\u0226\3\2\2\2\u0226W\3\2\2\2\u0227\u0225")
-        buf.write("\3\2\2\2\u0228\u0229\78\2\2\u0229Y\3\2\2\2\u022a\u022b")
-        buf.write("\t\5\2\2\u022b[\3\2\2\2Haegry~\u0084\u008f\u0099\u009f")
-        buf.write("\u00a4\u00b0\u00b6\u00bb\u00c2\u00c6\u00cc\u00d0\u00de")
-        buf.write("\u00e1\u00e5\u00ea\u00ee\u00f2\u00fb\u00fd\u0105\u0112")
-        buf.write("\u0118\u012c\u0130\u0138\u013f\u0147\u014d\u0155\u0164")
-        buf.write("\u0167\u0170\u0178\u0181\u0184\u0188\u0191\u0195\u0199")
-        buf.write("\u019b\u01a1\u01a9\u01ae\u01b3\u01b6\u01be\u01c2\u01c4")
-        buf.write("\u01cf\u01d1\u01d5\u01dc\u01e0\u01e7\u01eb\u01f3\u01fd")
-        buf.write("\u0201\u0205\u020f\u0213\u021e\u0225")
+        buf.write("\u021a\5*\26\2\u0219\u021b\5P)\2\u021a\u0219\3\2\2\2\u021a")
+        buf.write("\u021b\3\2\2\2\u021bS\3\2\2\2\u021c\u021d\7\n\2\2\u021d")
+        buf.write("\u021f\5*\26\2\u021e\u0220\5P)\2\u021f\u021e\3\2\2\2\u021f")
+        buf.write("\u0220\3\2\2\2\u0220U\3\2\2\2\u0221\u0226\7\67\2\2\u0222")
+        buf.write("\u0223\7\"\2\2\u0223\u0225\7\67\2\2\u0224\u0222\3\2\2")
+        buf.write("\2\u0225\u0228\3\2\2\2\u0226\u0224\3\2\2\2\u0226\u0227")
+        buf.write("\3\2\2\2\u0227W\3\2\2\2\u0228\u0226\3\2\2\2\u0229\u022a")
+        buf.write("\78\2\2\u022aY\3\2\2\2\u022b\u022c\t\5\2\2\u022c[\3\2")
+        buf.write("\2\2Iaegry~\u0084\u008f\u0099\u009f\u00a4\u00b0\u00b6")
+        buf.write("\u00bb\u00c2\u00c6\u00cc\u00d0\u00de\u00e1\u00e5\u00ea")
+        buf.write("\u00ee\u00f2\u00fb\u00fd\u0105\u0112\u0118\u012c\u0130")
+        buf.write("\u0138\u013f\u0147\u014d\u0155\u0164\u0167\u0170\u0178")
+        buf.write("\u0181\u0184\u0188\u0191\u0195\u0199\u019b\u01a1\u01a9")
+        buf.write("\u01ae\u01b3\u01b6\u01be\u01c2\u01c4\u01cf\u01d1\u01d5")
+        buf.write("\u01dc\u01e0\u01e7\u01eb\u01f3\u01fd\u0201\u0205\u020f")
+        buf.write("\u0213\u021a\u021f\u0226")
         return buf.getvalue()
 
 
@@ -3542,8 +3543,14 @@ class MiniPythonParser ( Parser ):
             self.match(MiniPythonParser.IN)
             self.state = 534
             self.or_test()
-            self.state = 535
-            self.comp_iter()
+            self.state = 536
+            self._errHandler.sync(self)
+            la_ = self._interp.adaptivePredict(self._input,68,self._ctx)
+            if la_ == 1:
+                self.state = 535
+                self.comp_iter()
+
+
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -3589,15 +3596,15 @@ class MiniPythonParser ( Parser ):
         self.enterRule(localctx, 82, self.RULE_comp_if)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 537
-            self.match(MiniPythonParser.IF)
             self.state = 538
+            self.match(MiniPythonParser.IF)
+            self.state = 539
             self.or_test()
-            self.state = 540
+            self.state = 541
             self._errHandler.sync(self)
-            la_ = self._interp.adaptivePredict(self._input,68,self._ctx)
+            la_ = self._interp.adaptivePredict(self._input,69,self._ctx)
             if la_ == 1:
-                self.state = 539
+                self.state = 540
                 self.comp_iter()
 
 
@@ -3642,17 +3649,17 @@ class MiniPythonParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 542
+            self.state = 543
             self.match(MiniPythonParser.NAME)
-            self.state = 547
+            self.state = 548
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             while _la==MiniPythonParser.DOT:
-                self.state = 543
-                self.match(MiniPythonParser.DOT)
                 self.state = 544
+                self.match(MiniPythonParser.DOT)
+                self.state = 545
                 self.match(MiniPythonParser.NAME)
-                self.state = 549
+                self.state = 550
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -3693,7 +3700,7 @@ class MiniPythonParser ( Parser ):
         self.enterRule(localctx, 86, self.RULE_string)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 550
+            self.state = 551
             self.match(MiniPythonParser.STRING)
         except RecognitionException as re:
             localctx.exception = re
@@ -3736,7 +3743,7 @@ class MiniPythonParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 552
+            self.state = 553
             _la = self._input.LA(1)
             if not(_la==MiniPythonParser.INTEGER or _la==MiniPythonParser.FLOAT):
                 self._errHandler.recoverInline(self)

@@ -1,6 +1,7 @@
 <global>
   <function: 'max'>
     <block>
+      <flow: 'pass'>
   <function: 'factorial'>
     <input: 'n'>
     <block>
@@ -9,13 +10,15 @@
           <var: 'n'>
           <const: '0'>
         <block>
-          <const: '1'>
-      <multiply: '*'>
-        <var: 'n'>
-        <call: 'factorial'>
-          <additive: '-'>
-            <var: 'n'>
+          <flow: 'return'>
             <const: '1'>
+      <flow: 'return'>
+        <multiply: '*'>
+          <var: 'n'>
+          <call: 'factorial'>
+            <additive: '-'>
+              <var: 'n'>
+              <const: '1'>
   <function: 'main'>
     <block>
       <call: 'print'>
