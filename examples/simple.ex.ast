@@ -8,73 +8,138 @@
                <and_test>
                  <not_test>
                    <comparison>
-                     <star_expr>
-                       <expr>
-                         <term>
-                           <factor>
-                             <atom>
-                               'a'
-         '='
-         <test>
-           <or_test>
-             <and_test>
-               <not_test>
-                 <comparison>
-                   <star_expr>
                      <expr>
                        <term>
                          <factor>
                            <atom>
+                             'print'
+                           <trailer>
                              '('
-                             <list_compr>
-                               <test>
-                                 <or_test>
-                                   <and_test>
-                                     <not_test>
-                                       <comparison>
-                                         <star_expr>
+                             <arg_list>
+                               <argument>
+                                 <test>
+                                   <or_test>
+                                     <and_test>
+                                       <not_test>
+                                         <comparison>
                                            <expr>
                                              <term>
                                                <factor>
                                                  <atom>
-                                                   'i'
-                               <comp_for>
-                                 'for'
-                                 <expr_list>
-                                   <star_expr>
-                                     <expr>
-                                       <term>
-                                         <factor>
-                                           <atom>
-                                             'i'
-                                 'in'
-                                 <or_test>
-                                   <and_test>
-                                     <not_test>
-                                       <comparison>
-                                         <star_expr>
+                                                   <number>
+                                                     '1'
+                               ','
+                               <argument>
+                                 <test>
+                                   <or_test>
+                                     <and_test>
+                                       <not_test>
+                                         <comparison>
                                            <expr>
                                              <term>
                                                <factor>
                                                  <atom>
-                                                   'range'
-                                                 <trailer>
-                                                   '('
-                                                   <arg_list>
-                                                     <argument>
-                                                       <test>
-                                                         <or_test>
-                                                           <and_test>
-                                                             <not_test>
-                                                               <comparison>
-                                                                 <star_expr>
-                                                                   <expr>
-                                                                     <term>
-                                                                       <factor>
-                                                                         <atom>
-                                                                           <number>
-                                                                             '10'
-                                                   ')'
+                                                   'x'
+                                 '='
+                                 <test>
+                                   <or_test>
+                                     <and_test>
+                                       <not_test>
+                                         <comparison>
+                                           <expr>
+                                             <term>
+                                               <factor>
+                                                 <atom>
+                                                   <number>
+                                                     '2'
+                               ','
+                               <argument>
+                                 '*'
+                                 <test>
+                                   <or_test>
+                                     <and_test>
+                                       <not_test>
+                                         <comparison>
+                                           <expr>
+                                             <term>
+                                               <factor>
+                                                 <atom>
+                                                   '['
+                                                   <list_compr>
+                                                     <test>
+                                                       <or_test>
+                                                         <and_test>
+                                                           <not_test>
+                                                             <comparison>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       <number>
+                                                                         '1'
+                                                     ','
+                                                     <test>
+                                                       <or_test>
+                                                         <and_test>
+                                                           <not_test>
+                                                             <comparison>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       <number>
+                                                                         '2'
+                                                     ','
+                                                     <test>
+                                                       <or_test>
+                                                         <and_test>
+                                                           <not_test>
+                                                             <comparison>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       <number>
+                                                                         '3'
+                                                   ']'
+                               ','
+                               <argument>
+                                 '**'
+                                 <test>
+                                   <or_test>
+                                     <and_test>
+                                       <not_test>
+                                         <comparison>
+                                           <expr>
+                                             <term>
+                                               <factor>
+                                                 <atom>
+                                                   '{'
+                                                   <dict_compr>
+                                                     <test>
+                                                       <or_test>
+                                                         <and_test>
+                                                           <not_test>
+                                                             <comparison>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       <number>
+                                                                         '2'
+                                                     ':'
+                                                     <test>
+                                                       <or_test>
+                                                         <and_test>
+                                                           <not_test>
+                                                             <comparison>
+                                                               <expr>
+                                                                 <term>
+                                                                   <factor>
+                                                                     <atom>
+                                                                       <number>
+                                                                         '2'
+                                                   '}'
                              ')'
        <newline>
    '<EOF>'

@@ -17,27 +17,35 @@
           <var: 'n'>
           <var: 'factorial'>
             <call>
-              <additive: '-'>
-                <var: 'n'>
-                <const: '1'>
+              <param>
+                <additive: '-'>
+                  <var: 'n'>
+                  <const: '1'>
   <function: 'main'>
     <block>
       <var: 'print'>
         <call>
-          <const: ''Вычисление факториалов''>
+          <param>
+            <const: ''Вычисление факториалов''>
       <for>
         <var: 'i'>
         <var: 'range'>
           <call>
-            <const: '10'>
+            <param>
+              <const: '10'>
         <block>
           <var: 'print'>
             <call>
-              <const: ''Факториал ''>
-              <var: 'i'>
-              <const: '' = ''>
-              <var: 'factorial'>
-                <call>
-                  <var: 'i'>
+              <param>
+                <const: ''Факториал ''>
+              <param>
+                <var: 'i'>
+              <param>
+                <const: '' = ''>
+              <param>
+                <var: 'factorial'>
+                  <call>
+                    <param>
+                      <var: 'i'>
   <var: 'main'>
     <call>

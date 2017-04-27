@@ -323,10 +323,6 @@ class SemanticParser(MiniPythonListener):
         if isinstance(self.current_node, (SemanticParser.Assign, SemanticParser.AugAssign)):
             self.current_node = self.current_node.scope
 
-    def enterStar_expr(self, ctx):
-        if len(ctx.children) == 1:
-            pass
-
     class Addity(Global):
         def __init__(self, operator, scope):
             super().__init__(scope)
@@ -378,10 +374,11 @@ class SemanticParser(MiniPythonListener):
 
     def enterFactor(self, ctx):
         if len(ctx.children) == 2:
-            operator = ctx.children[0].getText()
-            node = SemanticParser.Unary(operator, self.current_node)
-            self.current_node.add(node)
-            self.current_node = node
+            if isinstance(ctx.children[0], TerminalNode):
+                operator = ctx.children[0].getText()
+                node = SemanticParser.Unary(operator, self.current_node)
+                self.current_node.add(node)
+                self.current_node = node
 
     def exitFactor(self, ctx):
         if isinstance(self.current_node, (SemanticParser.Variable, SemanticParser.Constant)):
@@ -440,7 +437,6 @@ class SemanticParser(MiniPythonListener):
                 self.current_node = node
 
             elif text == '(':
-                #TODO: handle possibilities
                 pass
 
             else:
@@ -529,9 +525,44 @@ class SemanticParser(MiniPythonListener):
     def exitComp_if(self, ctx):
         self.current_node = self.current_node.scope
 
+    class FactParam(Global):
+        def __init__(self, scope):
+            super().__init__(scope)
+            self.is_keyword = False
+            self.unp_list = False
+            self.unp_dict = False
+
+        def __str__(self):
+            add_info = ''
+            if self.is_keyword:
+                add_info = 'keyword'
+            elif self.unp_list:
+                add_info = 'as args'
+            elif self.unp_dict:
+                add_info = 'as kwargs'
+            if add_info:
+                return "<param: '{}'>".format(add_info)
+            return "<param>"
+
     def enterArgument(self, ctx):
-        #TODO: parse different arguments
-        pass
+        node = SemanticParser.FactParam(self.current_node)
+        child = ctx.children[0]
+        if isinstance(child, TerminalNode):
+            if child.getText() == '*':
+                node.unp_list = True
+            elif child.getText() == '**':
+                node.unp_dict = True
+        else:
+            if len(ctx.children) == 3:
+                child = ctx.children[1]
+                if isinstance(child, TerminalNode) and child.getText() == '=':
+                    node.is_keyword = True
+
+        self.current_node.add(node)
+        self.current_node = node
+
+    def exitArgument(self, ctx):
+        self.current_node = self.current_node.scope
 
     def enterSubscript_list(self, ctx):
         child = ctx.children[0]

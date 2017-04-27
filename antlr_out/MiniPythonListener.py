@@ -233,15 +233,6 @@ class MiniPythonListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by MiniPythonParser#star_expr.
-    def enterStar_expr(self, ctx:MiniPythonParser.Star_exprContext):
-        pass
-
-    # Exit a parse tree produced by MiniPythonParser#star_expr.
-    def exitStar_expr(self, ctx:MiniPythonParser.Star_exprContext):
-        pass
-
-
     # Enter a parse tree produced by MiniPythonParser#expr.
     def enterExpr(self, ctx:MiniPythonParser.ExprContext):
         pass

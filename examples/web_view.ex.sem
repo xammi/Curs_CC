@@ -1,0 +1,169 @@
+<global>
+  <class: 'View'>
+    <block>
+      <function: 'dispatch'>
+        <input: 'self'>
+        <input: 'request'>
+        <array: 'args'>
+        <dict: 'kwargs'>
+        <block>
+          <assign: '='>
+            <var: 'method'>
+            <var: 'request'>
+              <resolve: 'method'>
+          <if>
+            <comp: 'in'>
+              <var: 'method'>
+              <var: 'self'>
+                <resolve: 'http_method_names'>
+            <block>
+              <if>
+                <comp: '=='>
+                  <var: 'method'>
+                  <const: ''GET''>
+                <block>
+                  <flow: 'return'>
+                    <var: 'self'>
+                      <resolve: 'get'>
+                      <call>
+                        <param>
+                          <var: 'request'>
+                        <param: 'as args'>
+                          <var: 'args'>
+                        <param: 'as kwargs'>
+                          <var: 'kwargs'>
+                <comp: '=='>
+                  <var: 'method'>
+                  <const: ''POST''>
+                <block>
+                  <flow: 'return'>
+                    <var: 'self'>
+                      <resolve: 'post'>
+                      <call>
+                        <param>
+                          <var: 'request'>
+                        <param: 'as args'>
+                          <var: 'args'>
+                        <param: 'as kwargs'>
+                          <var: 'kwargs'>
+          <flow: 'return'>
+            <dict>
+              <const: ''405''>
+              <const: ''Not allowed''>
+  <class: 'LoginView'>
+    <param>
+      <var: 'View'>
+    <block>
+      <assign: '='>
+        <var: 'http_method_names'>
+        <list>
+          <const: ''post''>
+      <class: 'User'>
+        <block>
+          <function: '__init__'>
+            <input: 'self'>
+            <input: 'email'>
+            <input: 'password'>
+            <block>
+              <assign: '='>
+                <var: 'self'>
+                  <resolve: 'email'>
+                <var: 'email'>
+              <assign: '='>
+                <var: 'self'>
+                  <resolve: 'password'>
+                <var: 'password'>
+              <assign: '='>
+                <var: 'self'>
+                  <resolve: 'is_active'>
+                <const: 'True'>
+      <function: 'post'>
+        <input: 'self'>
+        <input: 'request'>
+        <array: 'args'>
+        <dict: 'kwargs'>
+        <block>
+          <assign: '='>
+            <var: 'email'>
+            <var: 'request'>
+              <resolve: 'POST'>
+              <resolve: 'get'>
+              <call>
+                <param>
+                  <const: ''email''>
+          <assign: '='>
+            <var: 'password'>
+            <var: 'request'>
+              <resolve: 'POST'>
+              <resolve: 'get'>
+              <call>
+                <param>
+                  <const: ''password''>
+          <assign: '='>
+            <var: 'user'>
+            <var: 'User'>
+              <call>
+                <param: 'keyword'>
+                  <var: 'email'>
+                  <var: 'email'>
+                <param: 'keyword'>
+                  <var: 'password'>
+                  <var: 'password'>
+          <if>
+            <var: 'user'>
+            <block>
+              <if>
+                <var: 'user'>
+                  <resolve: 'is_active'>
+                <block>
+                  <assign: '='>
+                    <var: 'request'>
+                      <resolve: 'user'>
+                    <var: 'user'>
+                  <flow: 'return'>
+                    <dict>
+                      <const: ''status''>
+                      <const: ''OK''>
+              <assign: '='>
+                <var: 'error'>
+                <const: ''Пользователь не активен''>
+            <block>
+              <assign: '='>
+                <var: 'error'>
+                <const: ''Введены неверные логин / пароль''>
+          <flow: 'return'>
+            <dict>
+              <const: ''status''>
+              <const: ''ERROR''>
+              <const: ''error''>
+              <var: 'error'>
+  <function: 'handle'>
+    <block>
+      <class: 'HttpRequest'>
+        <block>
+          <assign: '='>
+            <var: 'method'>
+            <const: ''post''>
+          <assign: '='>
+            <var: 'POST'>
+            <dict>
+              <const: ''email''>
+              <const: ''max@mail.ru''>
+              <const: ''password''>
+              <const: ''11''>
+      <assign: '='>
+        <var: 'request'>
+        <var: 'HttpRequest'>
+          <call>
+      <assign: '='>
+        <var: 'response'>
+        <var: 'LoginView'>
+          <call>
+          <resolve: 'dispatch'>
+          <call>
+            <param>
+              <var: 'request'>
+      <var: 'print'>
+        <call>
+          <param>
+            <var: 'response'>

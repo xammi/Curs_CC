@@ -43,7 +43,7 @@ def nextToken(self):
 }
 
 /*
- * start grammar rules (86 -> 46)
+ * start grammar rules (86 -> 45)
  */
 
 single_input : NEWLINE | simple_stmt | compound_stmt NEWLINE ;
@@ -69,7 +69,7 @@ stmt : simple_stmt | compound_stmt ;
 simple_stmt : ( expr_stmt | flow_stmt ) NEWLINE ;
 
 expr_stmt : testlist_star_expr ( '=' test | aug_assign  test_list | ( '=' testlist_star_expr )* ) ;
-testlist_star_expr : ( test | star_expr ) ( ',' ( test | star_expr ) )* ','? ;
+testlist_star_expr : ( test | expr ) ( ',' ( test | expr ) )* ','? ;
 aug_assign : ADD_ASSIGN | SUB_ASSIGN | MULT_ASSIGN | DIV_ASSIGN | MOD_ASSIGN ;
 flow_stmt : PASS | BREAK | CONTINUE | RETURN test_list? ;
 
@@ -85,9 +85,8 @@ or_test : and_test ( OR and_test )* ;
 and_test : not_test ( AND not_test )* ;
 not_test : NOT not_test | comparison ;
 
-comparison : star_expr ( comp_op star_expr )* ;
+comparison : expr ( comp_op expr )* ;
 comp_op : LESS_THAN | GREATER_THAN | EQUALS | NOT_EQ | GT_EQ | LT_EQ | IN | NOT IN | IS | IS NOT ;
-star_expr : '*'? expr ;
 
 expr : term ( ( '+' | '-' ) term )* ;
 term : factor ( ( '*' | '/' | '%' ) factor )* ;
@@ -98,7 +97,7 @@ subscript_list : test | test? ':' test? ;
 atom : NAME | string+ | number | NONE | TRUE | FALSE | '(' list_compr? ')' | '[' list_compr? ']' | '{' dict_compr? '}' ;
 list_compr : test ( comp_for | (',' test)* ','? ) ;
 dict_compr : test ':' test ( comp_for | ',' test ':' test )* ','? ;
-expr_list : star_expr ( ',' star_expr )* ','? ;
+expr_list : expr ( ',' expr )* ','? ;
 test_list : test ( ',' test )* ','? ;
 
 class_def : CLASS NAME ( '(' arg_list ')' )? ':' suite ;

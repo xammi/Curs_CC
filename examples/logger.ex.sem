@@ -1,0 +1,98 @@
+<global>
+  <function: 'async'>
+    <input: 'action'>
+    <block>
+      <function: 'decorator'>
+        <input: 'thread_cnt'>
+        <block>
+          <function: 'wrapper'>
+            <array: 'args'>
+            <dict: 'kwargs'>
+            <block>
+              <var: 'print'>
+                <call>
+                  <param>
+                    <var: 'thread_cnt'>
+              <assign: '='>
+                <var: 'result'>
+                <var: 'action'>
+                  <call>
+                    <param: 'as args'>
+                      <var: 'args'>
+                    <param: 'as kwargs'>
+                      <var: 'kwargs'>
+              <assign: '='>
+                <var: 'result'>
+                  <index>
+                    <const: ''thread''>
+                <const: '1'>
+              <flow: 'return'>
+                <var: 'result'>
+          <flow: 'return'>
+            <var: 'wrapper'>
+      <flow: 'return'>
+        <var: 'decorator'>
+  <function: 'logger'>
+    <input: 'action'>
+    <block>
+      <function: 'wrapper'>
+        <array: 'args'>
+        <dict: 'kwargs'>
+        <block>
+          <var: 'print'>
+            <call>
+              <param>
+                <const: ''Запуск действия''>
+          <assign: '='>
+            <var: 'result'>
+            <var: 'action'>
+              <call>
+                <param: 'as args'>
+                  <var: 'args'>
+                <param: 'as kwargs'>
+                  <var: 'kwargs'>
+          <var: 'print'>
+            <call>
+              <param>
+                <const: ''Действие выполнено''>
+          <flow: 'return'>
+            <var: 'result'>
+      <flow: 'return'>
+        <var: 'wrapper'>
+  <decorator: 'logger'>
+  <decorator: 'async'>
+    <param: 'keyword'>
+      <var: 'thread_cnt'>
+      <const: '1'>
+  <function: 'action'>
+    <input: 'num'>
+    <block>
+      <flow: 'return'>
+        <dict>
+          <const: ''result''>
+          <list>
+            <var: 'str'>
+              <call>
+                <param>
+                  <var: 'x'>
+            <for>
+              <var: 'x'>
+              <var: 'range'>
+                <call>
+                  <param>
+                    <var: 'num'>
+              <if>
+                <comp: '=='>
+                  <multiply: '%'>
+                    <var: 'x'>
+                    <const: '2'>
+                  <const: '0'>
+  <var: 'print'>
+    <call>
+      <param>
+        <const: ''Результат''>
+      <param>
+        <var: 'action'>
+          <call>
+            <param>
+              <const: '10'>
