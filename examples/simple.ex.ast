@@ -13,35 +13,22 @@
                          <term>
                            <factor>
                              <atom>
-                               'print'
+                               'data'
                              <trailer>
-                               '('
-                               <arg_list>
-                                 <argument>
-                                   <test>
-                                     <or_test>
-                                       <and_test>
-                                         <not_test>
-                                           <comparison>
-                                             <star_expr>
-                                               <expr>
-                                                 <term>
-                                                   <factor>
-                                                     <atom>
-                                                       'x'
-                                   '='
-                                   <test>
-                                     <or_test>
-                                       <and_test>
-                                         <not_test>
-                                           <comparison>
-                                             <star_expr>
-                                               <expr>
-                                                 <term>
-                                                   <factor>
-                                                     <atom>
-                                                       <number>
-                                                         '2'
-                               ')'
+                               '['
+                               <subscript_list>
+                                 <test>
+                                   <or_test>
+                                     <and_test>
+                                       <not_test>
+                                         <comparison>
+                                           <star_expr>
+                                             <expr>
+                                               <term>
+                                                 <factor>
+                                                   <atom>
+                                                     <number>
+                                                       '0'
+                               ']'
        <newline>
    '<EOF>'

@@ -15,23 +15,29 @@
       <flow: 'return'>
         <multiply: '*'>
           <var: 'n'>
-          <call: 'factorial'>
-            <additive: '-'>
-              <var: 'n'>
-              <const: '1'>
+          <var: 'factorial'>
+            <call>
+              <additive: '-'>
+                <var: 'n'>
+                <const: '1'>
   <function: 'main'>
     <block>
-      <call: 'print'>
-        <const: ''Вычисление факториалов''>
+      <var: 'print'>
+        <call>
+          <const: ''Вычисление факториалов''>
       <for>
         <var: 'i'>
-        <call: 'range'>
-          <const: '10'>
+        <var: 'range'>
+          <call>
+            <const: '10'>
         <block>
-          <call: 'print'>
-            <const: ''Факториал ''>
-            <var: 'i'>
-            <const: '' = ''>
-            <call: 'factorial'>
+          <var: 'print'>
+            <call>
+              <const: ''Факториал ''>
               <var: 'i'>
-  <call: 'main'>
+              <const: '' = ''>
+              <var: 'factorial'>
+                <call>
+                  <var: 'i'>
+  <var: 'main'>
+    <call>

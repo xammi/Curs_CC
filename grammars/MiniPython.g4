@@ -43,7 +43,7 @@ def nextToken(self):
 }
 
 /*
- * start grammar rules
+ * start grammar rules (86 -> 46)
  */
 
 single_input : NEWLINE | simple_stmt | compound_stmt NEWLINE ;

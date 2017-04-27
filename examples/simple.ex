@@ -1,1 +1,1 @@
-print(x=2)
+data[0]

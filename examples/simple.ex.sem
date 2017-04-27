@@ -1,4 +1,4 @@
 <global>
-  <call: 'print'>
-    <var: 'x'>
-    <const: '2'>
+  <var: 'data'>
+    <index>
+      <const: '0'>
