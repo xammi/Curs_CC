@@ -368,13 +368,26 @@ class SemanticParser(MiniPythonListener):
             if len(ctx.children) > 1:
                 self.current_node = self.current_node.scope
 
+    class Unary(Global):
+        def __init__(self, operator, scope):
+            super().__init__(scope)
+            self.operator = operator
+
+        def __str__(self):
+            return "<unary: '{}'>".format(self.operator)
+
     def enterFactor(self, ctx):
-        #TODO: support for unary operations
-        if len(ctx.children) == 1:
-            pass
+        if len(ctx.children) == 2:
+            operator = ctx.children[0].getText()
+            node = SemanticParser.Unary(operator, self.current_node)
+            self.current_node.add(node)
+            self.current_node = node
 
     def exitFactor(self, ctx):
         if isinstance(self.current_node, (SemanticParser.Variable, SemanticParser.Constant)):
+            self.current_node = self.current_node.scope
+
+        elif isinstance(self.current_node, SemanticParser.Unary):
             self.current_node = self.current_node.scope
 
     class Variable(Global):
@@ -425,6 +438,10 @@ class SemanticParser(MiniPythonListener):
                 node = SemanticParser.GenDict(self.current_node)
                 self.current_node.add(node)
                 self.current_node = node
+
+            elif text == '(':
+                #TODO: handle possibilities
+                pass
 
             else:
                 node = SemanticParser.Variable(text, self.current_node)

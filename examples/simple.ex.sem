@@ -1,4 +1,10 @@
 <global>
-  <var: 'data'>
-    <index>
-      <const: '0'>
+  <assign: '='>
+    <var: 'a'>
+    <var: 'i'>
+    <for>
+      <var: 'i'>
+      <unary: 'range'>
+        <var: 'range'>
+          <call>
+            <const: '10'>
